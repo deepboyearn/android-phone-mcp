@@ -2,10 +2,10 @@
 
 Control authorized Android phones from an MCP-capable AI app. Install Node.js 20+; missing ADB is downloaded from Google on first use. No APK, API key, fixed computer path or device serial is required.
 
-## One-command setup from GitHub
+## One-command setup
 
 ```sh
-npx --yes https://github.com/deepboyearn/android-phone-mcp/releases/download/v1.2.0/deepboyearn-android-mcp-1.2.0.tgz --doctor
+npx --yes deepboyearn-android-mcp --doctor
 ```
 
 No ZIP extraction, Git installation, global installation or separate ADB setup is needed. Internet is needed for the first package/dependency downloads and, if required, ADB. Later starts reuse caches.
@@ -17,25 +17,25 @@ Add this to your AI app's MCP configuration; the app starts the server automatic
   "mcpServers": {
     "android-phone": {
       "command": "npx",
-      "args": ["--yes", "https://github.com/deepboyearn/android-phone-mcp/releases/download/v1.2.0/deepboyearn-android-mcp-1.2.0.tgz"]
+      "args": ["--yes", "deepboyearn-android-mcp"]
     }
   }
 }
 ```
 
-For Windows clients that cannot start npx directly, use `"command": "cmd"` and `"args": ["/d", "/c", "npx", "--yes", "https://github.com/deepboyearn/android-phone-mcp/releases/download/v1.2.0/deepboyearn-android-mcp-1.2.0.tgz"]`.
+For Windows clients that cannot start npx directly, use `"command": "cmd"` and `"args": ["/d", "/c", "npx", "--yes", "deepboyearn-android-mcp"]`.
 
 This is a local stdio server, with no public server URL or manual start notification.
 
 ## npm registry
 
-The intended npm name is **deepboyearn-android-mcp**; the unrelated name android-phone-mcp is already occupied. Registry publication requires the maintainer's npm login. Until it is published, use the GitHub release above. After publication, the shorter command is:
+The npm package is **deepboyearn-android-mcp**; the unrelated name android-phone-mcp belongs to a different package. Check your setup with:
 
 ```sh
 npx --yes deepboyearn-android-mcp --doctor
 ```
 
-The MCP configuration can then use `"command": "npx", "args": ["--yes", "deepboyearn-android-mcp"]`. Alternatively, install globally with `npm install --global deepboyearn-android-mcp`; the executable name is `android-phone-mcp`.
+Alternatively, install globally with `npm install --global deepboyearn-android-mcp`; the executable name is `android-phone-mcp`. The earlier v1.2.0 GitHub release remains available as a fallback using `npx --yes https://github.com/deepboyearn/android-phone-mcp/releases/download/v1.2.0/deepboyearn-android-mcp-1.2.0.tgz --doctor`.
 
 ## Connect a phone
 
