@@ -2,10 +2,52 @@
 
 Control authorized Android phones from an MCP-capable AI app. Install Node.js 20+; missing ADB is downloaded from Google on first use. No APK, API key, fixed computer path or device serial is required.
 
+## Requirements — read before installing
+
+Installing this npm package alone does not give you an AI assistant or authorize a phone. You need a local MCP-capable AI app, Node.js and an Android phone with debugging permission.
+
+### On your computer
+
+| Requirement | What you need | Official download / setup |
+| --- | --- | --- |
+| Operating system | A desktop/laptop running Windows, macOS or Linux. Automatic ADB setup supports Windows/macOS x64 or arm64 and Linux x64; Windows arm64 may need OS x64 emulation. Other architectures need their own compatible ADB. | Use a Node.js build supported by your OS; see [Node.js downloads](https://nodejs.org/en/download). |
+| Node.js with npm/npx | Node.js **20 or newer** is the package minimum. Prefer the current supported **LTS** release. Keep npm/npx available on PATH so your AI app can start the server. | [Download Node.js](https://nodejs.org/en/download) — its standard installer includes npm/npx. Reopen your terminal and AI app after installing. |
+| A local AI app with stdio MCP support | The app must be able to run a command on this computer and call MCP tools. For example, use Codex or VS Code with Copilot/MCP support. Sign in and satisfy that app's account/plan requirements. A browser-only client that supports remote HTTP servers alone cannot run this stdio server directly. | [Codex MCP setup](https://learn.chatgpt.com/docs/extend/mcp), or [download VS Code](https://code.visualstudio.com/download) and follow its [MCP setup guide](https://code.visualstudio.com/docs/agent-customization/mcp-servers). Choose one compatible app. |
+| Internet and storage | Internet for the initial npm package/dependency downloads and, if needed, Google's Platform Tools. Your AI app may also require internet. Allow enough disk space for Node.js, your AI app, npm dependencies and the ADB cache. | No separate service account or API key is required by this MCP package; your chosen AI app has its own requirements. |
+| ADB / Platform Tools | Needed to communicate with Android. The package uses an existing ADB or downloads and verifies Google's official Platform Tools automatically on supported platforms. **Usually no manual ADB installation or PATH edit is needed.** | For offline/custom setups or unsupported architectures: [official Android Platform Tools downloads](https://developer.android.com/tools/releases/platform-tools). Set `ADB_PATH` to a compatible executable if needed. |
+
+Check Node.js and npm before installing:
+
+```sh
+node --version
+npm --version
+npx --version
+```
+
+If a command is not found, finish installing Node.js and reopen the terminal. If the AI app still cannot find npx, make sure it inherits the Node.js installation's PATH and restart the app.
+
+### On your Android phone and network
+
+| Connection | Requirements | Official instructions |
+| --- | --- | --- |
+| Wireless, without an initial cable | Android **11+** with **Wireless debugging** available; enable Developer options and Wireless debugging. Keep phone and computer on the same Wi-Fi and authorize pairing on the phone. Have its current pairing code, pairing address and connection address ready. | [Enable Developer options](https://developer.android.com/studio/debug/dev-options) and [ADB wireless pairing](https://developer.android.com/tools/adb#connect-to-a-device-over-wi-fi). |
+| Network access | The Wi-Fi must allow the computer to communicate with the phone. Guest/corporate networks, client isolation, VPNs or firewall rules can interfere. If discovery fails, enter the phone's addresses manually; manual entry still requires network reachability. | [Android device connection troubleshooting](https://developer.android.com/studio/run/device). |
+| USB, optional alternative | A data-capable USB cable, USB debugging enabled, and the phone's debugging authorization accepted. Older Android versions can use USB subject to their ADB support. | [Run apps on a hardware device](https://developer.android.com/studio/run/device). |
+| USB drivers/permissions, only when needed | Windows may need a manufacturer-specific driver; Linux USB may need udev permissions. These are USB requirements, not requirements for wireless pairing. | [Official manufacturer USB driver links](https://developer.android.com/studio/run/oem-usb) and [device setup for Linux](https://developer.android.com/studio/run/device). |
+
+Android Studio, Java/JDK, Python, Git, root access and an APK on the phone are not required to use this package's tools. iPhone is not supported. The AI app must be configured with the MCP entry below before it can control the phone; `--doctor` only checks ADB and connected devices.
+
 ## One-command setup
 
 ```sh
 npx --yes deepboyearn-android-mcp --doctor
+```
+
+Or install the command once:
+
+```sh
+npm install --global deepboyearn-android-mcp
+android-phone-mcp --doctor
 ```
 
 No ZIP extraction, Git installation, global installation or separate ADB setup is needed. Internet is needed for the first package/dependency downloads and, if required, ADB. Later starts reuse caches.
@@ -101,5 +143,9 @@ npm pack --dry-run
 ```
 
 Smoke tests need an authorized connected phone. The actions option opens Settings and presses Back. The npm archive includes runtime code, package metadata, README, LICENSE and example configuration. CLI options: `--help`, `--version`, `--doctor`, `--config`.
+
+## Updating documentation and installed copies
+
+GitHub README changes appear on GitHub after pushing. They do **not** change an already-published npm version: maintainers must publish a new package version to update the npm package's README and included files. Users with a global installation can update using `npm install --global deepboyearn-android-mcp@latest`. For an npx setup, run `npx --yes deepboyearn-android-mcp@latest --doctor` to check the latest release; pinned versions remain unchanged until the user updates the pin.
 
 Built with the official [MCP TypeScript SDK](https://ts.sdk.modelcontextprotocol.io/) and [Android Debug Bridge](https://developer.android.com/tools/adb). MIT license applies to this project's code.
