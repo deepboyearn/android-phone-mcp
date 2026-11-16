@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "android-phone": {
+      "command": "npx",
+      "args": ["--yes", "deepboyearn-android-mcp"]
+    }
+  }
+}

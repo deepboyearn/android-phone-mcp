@@ -1,0 +1,20 @@
+{
+  "linux": {
+    "version": "37.0.3",
+    "url": "https://dl.google.com/android/repository/platform-tools_r37.0.3-linux.zip",
+    "size": 9571024,
+    "sha256": "214548146cadb2ca3508143d8a1d4be4c59de5bb837253e3ede89ed74cf450d1"
+  },
+  "darwin": {
+    "version": "37.0.3",
+    "url": "https://dl.google.com/android/repository/platform-tools_r37.0.3-darwin.zip",
+    "size": 16597640,
+    "sha256": "f89baeb829903ceaf3ac92a78a2d25152728049d6316ebeaaca06d716e64842d"
+  },
+  "win32": {
+    "version": "37.0.3",
+    "url": "https://dl.google.com/android/repository/platform-tools_r37.0.3-win.zip",
+    "size": 8188595,
+    "sha256": "b5d2015f5d5b7a24a2ac646a245f20f63fb501e4174c61863c74bed1df6de4bd"
+  }
+}

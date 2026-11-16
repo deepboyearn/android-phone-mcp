@@ -1,0 +1,48 @@
+{
+  "name": "deepboyearn-android-mcp",
+  "version": "1.2.0",
+  "type": "module",
+  "description": "Local Android phone control over ADB, for MCP clients",
+  "bin": {
+    "android-phone-mcp": "src/cli.js"
+  },
+  "files": [
+    "src/",
+    "README.md",
+    "LICENSE",
+    "mcp.example.json"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepboyearn/android-phone-mcp.git"
+  },
+  "homepage": "https://github.com/deepboyearn/android-phone-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/deepboyearn/android-phone-mcp/issues"
+  },
+  "keywords": [
+    "mcp",
+    "android",
+    "adb",
+    "phone",
+    "wireless-debugging"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test",
+    "smoke": "node scripts/smoke.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "fast-xml-parser": "^5.3.0",
+    "fflate": "^0.8.3",
+    "zod": "^4.6.7"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
