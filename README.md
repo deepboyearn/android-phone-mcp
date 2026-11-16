@@ -130,6 +130,8 @@ Vendor/version differences can affect features. iPhone is not supported. This is
 
 The server cannot bypass lock screens, grant root or retrieve apps' original source code. Secure screens may block screenshots; games/WebViews may expose few elements. Hindi, emoji, multiline input and literal `%s` are rejected by typing; use the phone keyboard for those.
 
+When Android cannot obtain an idle UI tree (for example during a playing video), `android_screen` returns a `mode: screenshot` explanation and a PNG instead of failing without a usable view. Normal accessible screens still return the JSON element array. Use coordinate taps/swipes with the fallback; label-based taps require an accessible screen. Offline/ADB errors remain errors. Secure apps can still produce black screenshots. `android_open_app` resolves the app's launcher and waits for Android's launch status; it does not prevent subsequent user navigation.
+
 Screen data goes to the connected AI client and may be private. UI text is untrusted. The AI client must handle authorization for messages, purchases, deletions and account changes; the server has no human confirmation dialog. There is no arbitrary shell, file deletion, APK installation or background screenshot logging tool.
 
 ## Development

@@ -7,6 +7,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import { homedir } from 'node:os';
 import { DeviceManager } from './devices.js';
 import { installPlatformTools } from './platform-tools.js';
+import { ScreenUnavailableError } from './screen.js';
 
 const run = promisify(execFile);
 export function resolveAdb(env = process.env, home = homedir(), platform = process.platform, exists = existsSync) {
@@ -90,9 +91,23 @@ export function parseScreen(xml) {
 export async function screenNodes() {
   const serial = await target();
   // exec-out avoids writing the private UI dump to the phone's shared storage.
-  const output = await adb(['-s', serial, 'exec-out', 'uiautomator dump /dev/tty']);
-  const start = output.indexOf('<?xml');
+  let output;
+  try { output = await adb(['-s', serial, 'exec-out', 'uiautomator dump /dev/tty']); }
+  catch (error) {
+    if (/could not get idle state|null root node|UI hierarchy/i.test(error.message)) throw new ScreenUnavailableError('Android cannot read accessible elements while this screen is animating or unavailable.');
+    throw error;
+  }
+  const start = output.indexOf('<?xml') >= 0 ? output.indexOf('<?xml') : output.indexOf('<hierarchy');
   const end = output.lastIndexOf('</hierarchy>');
-  if (start < 0 || end < 0) throw new Error('Android could not read this screen. Try a screenshot or unlock the phone.');
+  if (start < 0 || end < 0) throw new ScreenUnavailableError('Android cannot read accessible elements on this screen (it may be animating, locked or protected). Use android_screen for a screenshot, or pause the animation before tapping by label.');
   return parseScreen(output.slice(start, end + '</hierarchy>'.length));
+}
+
+export async function launchApp(packageName, runShell = shell) {
+  const resolved = await runShell(['cmd','package','resolve-activity','--brief','--user','current','-a','android.intent.action.MAIN','-c','android.intent.category.LAUNCHER',packageName]);
+  const component = resolved.split(/\r?\n/).map(s=>s.trim()).findLast(s=>/^[A-Za-z0-9_.$]+\/[A-Za-z0-9_.$]+$/.test(s));
+  if (!component) throw new Error('No launchable activity found for this app in the current Android user. Use android_apps to check the package name.');
+  const output = await runShell(['am','start','-W','--user','current','-n',component]);
+  if (/Error:|Exception|Status:\s*(?:timeout|error)/i.test(output) || !/^Status:\s*ok\s*$/im.test(output)) throw new Error(`Android did not confirm that the app launched: ${output}`);
+  return output;
 }

@@ -42,7 +42,11 @@ try {
     const result = await client.callTool({ name, arguments: {} });
     assert.ok(!result.isError, `${name}: ${JSON.stringify(result)}`);
     if (name === 'android_screenshot') assert.equal(result.content[0].mimeType, 'image/png');
-    if (name === 'android_screen') assert.ok(JSON.parse(result.content[0].text).length > 0);
+    if (name === 'android_screen') {
+      const screen = JSON.parse(result.content[0].text);
+      if (Array.isArray(screen)) assert.ok(screen.length > 0);
+      else { assert.equal(screen.mode, 'screenshot'); assert.ok(result.content.some(c=>c.type==='image' && c.mimeType==='image/png')); }
+    }
     console.log(`PASS: ${name}`);
   }
   const rejected = await client.callTool({ name: 'android_tap', arguments: { x: -1, y: 0 } });

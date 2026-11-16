@@ -1,6 +1,6 @@
 {
   "name": "deepboyearn-android-mcp",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "type": "module",
   "description": "Local Android phone control over ADB, for MCP clients",
   "bin": {
