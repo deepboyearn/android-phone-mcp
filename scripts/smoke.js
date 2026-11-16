@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const client = new Client({ name: 'phone-smoke-test', version: '1.0.0' });
 const transport = new StdioClientTransport({
   command: process.env.MCP_COMMAND || process.env.MCP_NODE_PATH || process.execPath,
-  args: process.env.MCP_COMMAND ? [] : [fileURLToPath(new URL('../src/cli.js', import.meta.url))],
+  args: process.env.MCP_ARGS ? JSON.parse(process.env.MCP_ARGS) : process.env.MCP_COMMAND ? [] : [fileURLToPath(new URL('../src/cli.js', import.meta.url))],
   cwd: process.env.MCP_TEST_CWD,
   env: { ...process.env },
 });
